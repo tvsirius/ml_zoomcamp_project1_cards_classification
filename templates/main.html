@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Playing Card Classification Model Form</title>
+</head>
+<body>
+    <h1>CARD CLASSIFICATION</h1>
+    <br>Classification based on the image<br>
+    <h3><p id="classification_result"></p></h3>
+    <br>
+    <h1>UPLOAD CARD IMAGE</h1>
+    <form action="/predict_img" method="post" id="image_form" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required onchange="displayImage(this)">
+        <input type="submit" value="Get Classification">
+    </form>
+
+    <!-- Display uploaded image -->
+    <img id="uploaded_image" src="" alt="Uploaded Image" style="max-width: 100%; margin-top: 10px; display: none;">
+
+    <script>
+
+        function displayImage(input) {
+            const uploadedImage = document.getElementById("uploaded_image");
+            uploadedImage.src = URL.createObjectURL(input.files[0]);
+            uploadedImage.style.display = "block";
+
+            // Show the submit button after selecting an image
+            document.getElementById("image_form").elements["submit_button"].style.display = "inline";
+        }
+
+        document.getElementById("image_form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch("/predict_img", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("classification_result").innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+
+</body>
+</html>
