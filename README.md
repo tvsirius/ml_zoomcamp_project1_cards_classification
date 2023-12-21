@@ -60,7 +60,7 @@ in this repository subfolders is empty, but cards_dataset.zip is presented with 
 
 
 
-For building image and deployment I have used:
+### For building image and deployment I have used:
 
 docker build -t cardclass .
 
@@ -68,16 +68,23 @@ then i run this container with:
 
 docker run -it -p 9696:9696 cardclass:latest
 
+
 then I log in to GPC (Google Cloud Project Console) from local terminal, 
 created a GCP image repository, enabled GCP specific API for working with
 images, added a tag to my image, pushed it there, and run this container via Cloud Run service.
 
-commands:
+### commands for GCP:
+
 gcloud auth login
+
 gcloud config set project YOUR_PROJECT_ID
+
 docker tag cardclass:latest gcr.io/YOUR_PROJECT_ID/cardclass:latest
+
 gcloud auth configure-docker
+
 docker push gcr.io/YOUR_PROJECT_ID/cardclass:latest
+
 
 [CARD CLASSIFICATION web page](https://cardclass-2avfrxfgrq-lm.a.run.app/)
 
